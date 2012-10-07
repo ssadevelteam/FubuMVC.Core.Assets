@@ -1,0 +1,2 @@
+FubuMVC.Core.Assets.Testing
+FubuMVC.Core.Assets.IntegrationTesting
