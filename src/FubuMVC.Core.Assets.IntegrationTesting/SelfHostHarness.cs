@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Xml;
+using Bottles;
 using FubuCore;
 using FubuMVC.Core.Endpoints;
+using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Urls;
 using FubuMVC.SelfHost;
@@ -38,10 +40,16 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
         public static void Start()
         {
             _server = new SelfHostHttpServer(5501);
+
+
+            var rootDirectory = GetRootDirectory();
+            new FileSystem().DeleteDirectory(rootDirectory.AppendPath(FubuMvcPackageFacility.FubuContentFolder));
+
+            FubuMvcPackageFacility.PhysicalRootPath = rootDirectory;
             var runtime = FubuApplication.For<HarnessRegistry>().StructureMap(new Container()).Bootstrap();
         
         
-            _server.Start(runtime, GetRootDirectory());
+            _server.Start(runtime, rootDirectory);
 
             var urls = runtime.Facility.Get<IUrlRegistry>();
             urls.As<UrlRegistry>().RootAt(_server.BaseAddress);

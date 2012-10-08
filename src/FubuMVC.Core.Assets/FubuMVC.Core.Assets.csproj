@@ -32,16 +32,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles">
-      <HintPath>..\packages\Bottles.0.9.1.365\lib\Bottles.dll</HintPath>
+      <HintPath>..\packages\Bottles.0.9.1.369\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore">
-      <HintPath>..\packages\FubuCore.0.9.9.181\lib\FubuCore.dll</HintPath>
+      <HintPath>..\packages\FubuCore.0.9.9.182\lib\FubuCore.dll</HintPath>
     </Reference>
-    <Reference Include="FubuLocalization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FubuLocalization.0.9.5.79\lib\FubuLocalization.dll</HintPath>
+    <Reference Include="FubuLocalization">
+      <HintPath>..\packages\FubuLocalization.0.9.5.80\lib\FubuLocalization.dll</HintPath>
     </Reference>
-    <Reference Include="FubuMVC.Core, Version=0.9.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FubuMVC.Core.0.9.8.1195\lib\net40\FubuMVC.Core.dll</HintPath>
+    <Reference Include="FubuMVC.Core">
+      <HintPath>..\packages\FubuMVC.Core.0.9.8.1200\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.UI">
       <HintPath>..\packages\FubuMVC.Core.UI.0.9.8.1195\lib\net40\FubuMVC.Core.UI.dll</HintPath>
@@ -180,7 +180,16 @@
     <Compile Include="WarmUpSetsForCombinationPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include=".package-manifest" />
+    <None Include="global.asset.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+    <EmbeddedResource Include="pak-WebContent.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\scripts\jquery-1.8.2.min.js" />
+    <Content Include="Content\scripts\underscore-min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

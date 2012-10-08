@@ -80,6 +80,9 @@ end
 
 desc "Compiles the app"
 task :compile => [:restore_if_missing, :clean, :version] do
+  FileUtils.rm_rf 'src/FubuMVC.Core.Assets.IntegrationTesting/fubu-content'
+  bottles("assembly-pak src/FubuMVC.Core.Assets")
+
   MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/FubuMVC.Core.Assets.sln', :clrversion => CLR_TOOLS_VERSION
 
   target = COMPILE_TARGET.downcase
