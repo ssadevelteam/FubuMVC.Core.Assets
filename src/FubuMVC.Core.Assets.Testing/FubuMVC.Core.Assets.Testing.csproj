@@ -119,6 +119,7 @@
     <Compile Include="AssetRequirementsTester.cs" />
     <Compile Include="AssetServicesRegistrationTester.cs" />
     <Compile Include="AssetSetTester.cs" />
+    <Compile Include="Assets_namespace_should_be_registered_as_a_global_namespace.cs" />
     <Compile Include="AssetTagPlanCacheTester.cs" />
     <Compile Include="AssetTagPlannerTester.cs" />
     <Compile Include="AssetTagWriterTester.cs" />
