@@ -9,7 +9,7 @@
     <projectUrl>http://mvc.fubu-project.org/</projectUrl>
     <iconUrl>https://github.com/DarthFubuMVC/fubu-collateral/raw/master/Icons/FubuMvc_256.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>FubuMVC's Asset Pipeline</description>
+    <description>The FubuMVC Asset Pipeline</description>
     <tags>web framework mvc fubumvc</tags>
     <dependencies>
       <dependency id="FubuMVC.Core" />
