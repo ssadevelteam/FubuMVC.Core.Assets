@@ -17,7 +17,7 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
         public void can_read()
         {
             typeof(AssetGraph).Assembly.GetManifestResourceNames().Each(x => Debug.WriteLine(x));
-            var manifest = new AssemblyPackageManifestFactory().Extract(typeof (AssetGraph).Assembly);
+            var manifest = AssemblyPackageManifestFactory.Extract(typeof (AssetGraph).Assembly);
 
             Debug.WriteLine(manifest.Role);
         }
