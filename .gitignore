@@ -25,3 +25,4 @@ src/*/repositories.config
 results
 *.DotSettings.user
 bottles.cmd
+src/FubuMVC.Core.Assets.IntegrationTesting/fubu-content/
