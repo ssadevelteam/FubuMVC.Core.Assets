@@ -39,17 +39,19 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
 
         public static void Start()
         {
-            _server = new SelfHostHttpServer(5501);
+            
 
 
             var rootDirectory = GetRootDirectory();
             new FileSystem().DeleteDirectory(rootDirectory.AppendPath(FubuMvcPackageFacility.FubuContentFolder));
 
+            _server = new SelfHostHttpServer(5501, rootDirectory);
+
             FubuMvcPackageFacility.PhysicalRootPath = rootDirectory;
             var runtime = FubuApplication.For<HarnessRegistry>().StructureMap(new Container()).Bootstrap();
         
         
-            _server.Start(runtime, rootDirectory);
+            _server.Start(runtime);
 
             var urls = runtime.Facility.Get<IUrlRegistry>();
             urls.As<UrlRegistry>().RootAt(_server.BaseAddress);
