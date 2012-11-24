@@ -24,7 +24,7 @@ namespace FubuMVC.Core.Assets
             // TODO -- Hokum.  Needs to be pluggable.
             var headerCache = graph.Services.DefaultServiceFor<IHeadersCache>().Value.As<IHeadersCache>();
             var chain = createAssetContentChain(graph);
-            chain.Filters.Add(new EtagInvocationFilter(headerCache, args =>
+            chain.AddFilter(new EtagInvocationFilter(headerCache, args =>
             {
                 var currentChain = args.Get<ICurrentChain>();
                 return ResourceHash.For(currentChain);

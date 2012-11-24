@@ -10,18 +10,6 @@ using System.Collections.Generic;
 
 namespace FubuMVC.Core.Assets.IntegrationTesting
 {
-    [TestFixture]
-    public class can_find_the_stupid_manifest_in_the_assembly
-    {
-        [Test]
-        public void can_read()
-        {
-            typeof(AssetGraph).Assembly.GetManifestResourceNames().Each(x => Debug.WriteLine(x));
-            var manifest = AssemblyPackageManifestFactory.Extract(typeof (AssetGraph).Assembly);
-
-            Debug.WriteLine(manifest.Role);
-        }
-    }
 
     [TestFixture]
     public class default_assets_are_included_in_the_bottle
