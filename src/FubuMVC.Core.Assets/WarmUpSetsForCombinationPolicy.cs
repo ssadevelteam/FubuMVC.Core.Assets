@@ -28,9 +28,13 @@ namespace FubuMVC.Core.Assets
             {
                 return;
             }
-            var mimeType = MimeType.MimeTypeByFileName(dependencies[0]);
-            _planCache.PlanFor(mimeType, dependencies);
-        }
 
+            var mimeTypes = dependencies.GroupBy(MimeType.MimeTypeByFileName);
+
+            foreach (var mimeType in mimeTypes)
+            {
+                _planCache.PlanFor(mimeType.Key, mimeType);
+            }
+        }
     }
 }
