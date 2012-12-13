@@ -194,6 +194,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\scripts\jquery-1.8.2.min.js" />
+    <Content Include="Content\scripts\jquery.continuations.forms.js" />
+    <Content Include="Content\scripts\jquery.continuations.js" />
+    <Content Include="Content\scripts\jquery.form.js" />
     <Content Include="Content\scripts\underscore-min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
