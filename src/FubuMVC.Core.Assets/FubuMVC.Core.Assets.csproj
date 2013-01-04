@@ -170,6 +170,7 @@
     <Compile Include="MimetypeRegistrationActivator.cs" />
     <Compile Include="MissingAssetTagSubject.cs" />
     <Compile Include="MixedMimetypeException.cs" />
+    <Compile Include="NEW\Classes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordingAssetRegistration.cs" />
     <Compile Include="Tags\AssetTagBuilder.cs" />

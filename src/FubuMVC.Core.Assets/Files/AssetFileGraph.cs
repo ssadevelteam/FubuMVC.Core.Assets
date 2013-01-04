@@ -6,6 +6,7 @@ using FubuCore.Util;
 
 namespace FubuMVC.Core.Assets.Files
 {
+    [MarkedForTermination]
     public class AssetFileGraph : IAssetFileRegistration, IAssetFileGraph
     {
         public static readonly string Application = "application";

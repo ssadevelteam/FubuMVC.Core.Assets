@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FubuCore;
 using FubuMVC.Core.Runtime;
 
 namespace FubuMVC.Core.Assets.Files
@@ -145,6 +146,8 @@ namespace FubuMVC.Core.Assets.Files
             return Name.Split('.').Skip(1).Select(x => "." + x);
         }
 
+        // TODO -- Kill this
+        [MarkedForTermination]
         public bool MatchesFullPath(string path)
         {
             return string.Equals(FullPath, path, StringComparison.InvariantCultureIgnoreCase);

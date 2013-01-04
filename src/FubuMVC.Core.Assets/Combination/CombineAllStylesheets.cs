@@ -6,6 +6,7 @@ using FubuMVC.Core.Runtime;
 
 namespace FubuMVC.Core.Assets.Combination
 {
+    // TODO -- why isn't this using Mimetypes?
     public class CombineAllStylesheets : ICombinationPolicy
     {
         public MimeType MimeType

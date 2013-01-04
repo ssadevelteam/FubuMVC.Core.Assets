@@ -12,7 +12,7 @@ namespace FubuMVC.Tests.Assets.Combination
     public class CombineAllStyleSheetsTester
     {
         [Test]
-        public void mime_type_is_javascript_because_it_matters()
+        public void mime_type_is_css_because_it_matters()
         {
             new CombineAllStylesheets().MimeType.ShouldEqual(MimeType.Css);
         }

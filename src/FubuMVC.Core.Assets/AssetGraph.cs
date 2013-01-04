@@ -9,6 +9,7 @@ using FubuMVC.Core.Runtime;
 
 namespace FubuMVC.Core.Assets
 {
+    // TODO -- this becomes a 
     public class AssetGraph : IComparer<IFileDependency>, IAssetRegistration
     {
         private readonly Cache<string, IList<string>> _combos =
@@ -226,11 +227,13 @@ namespace FubuMVC.Core.Assets
             return (IFileDependency) ObjectFor(name);
         }
 
+        [MarkedForTermination]
         public void OnPrecompile(Action<IAssetRegistration> action)
         {
             _precompileActions.Add(action);
         }
 
+        [MarkedForTermination]
         public void Precompile()
         {
             _precompileActions.Each(x => x(this));

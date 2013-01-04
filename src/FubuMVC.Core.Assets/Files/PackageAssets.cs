@@ -6,6 +6,7 @@ using FubuCore.Util;
 
 namespace FubuMVC.Core.Assets.Files
 {
+    [MarkedForTermination]
     public class PackageAssets
     {
         private readonly Cache<AssetFolder, List<AssetFile>> _files = new Cache<AssetFolder, List<AssetFile>>(key => new List<AssetFile>());
