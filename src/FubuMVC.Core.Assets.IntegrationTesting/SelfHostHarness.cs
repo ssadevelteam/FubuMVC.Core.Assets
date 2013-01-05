@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Xml;
-using Bottles;
 using FubuCore;
 using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Urls;
-using FubuMVC.SelfHost;
+using FubuMVC.Katana;
+using FubuMVC.OwinHost;
 using FubuMVC.StructureMap;
 using NUnit.Framework;
 using StructureMap;
@@ -34,31 +34,18 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
 
     public static class SelfHostHarness
     {
-        private static SelfHostHttpServer _server;
-        private static EndpointDriver _endpoints;
+        private static EmbeddedFubuMvcServer _server;
 
         public static void Start()
         {
-            
-
-
             var rootDirectory = GetRootDirectory();
             new FileSystem().DeleteDirectory(rootDirectory.AppendPath(FubuMvcPackageFacility.FubuContentFolder));
 
-            _server = new SelfHostHttpServer(5501, rootDirectory);
+            var port = PortFinder.FindPort(5501);
 
-            FubuMvcPackageFacility.PhysicalRootPath = rootDirectory;
-            var runtime = FubuApplication.For<HarnessRegistry>().StructureMap(new Container()).Bootstrap();
-        
-        
-            _server.Start(runtime);
-
-            var urls = runtime.Factory.Get<IUrlRegistry>();
-            urls.As<UrlRegistry>().RootAt(_server.BaseAddress);
-
-            UrlContext.Stub(_server.BaseAddress);
-
-            _endpoints = new EndpointDriver(urls);
+            _server = FubuApplication.For<HarnessRegistry>()
+                                     .StructureMap(new Container())
+                                     .RunEmbedded(rootDirectory, port);
         }
 
         public static string GetRootDirectory()
@@ -78,7 +65,7 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
         {
             get
             {
-                return _endpoints;
+                return _server.Endpoints;
             }
         }
 

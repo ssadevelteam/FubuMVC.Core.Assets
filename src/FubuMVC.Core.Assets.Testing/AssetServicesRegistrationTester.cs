@@ -57,6 +57,14 @@ namespace FubuMVC.Tests.Assets
         }
 
         [Test]
+        public void combination_policy_cache_is_registered_as_a_singleton()
+        {
+            registeredTypeIs<ICombinationPolicyCache, CombinationPolicyCache>();
+
+            ServiceRegistry.ShouldBeSingleton(typeof (CombinationPolicyCache));
+        }
+
+        [Test]
         public void asset_dependency_finder_should_be_registered_as_a_singleton()
         {
             registeredTypeIs<IAssetDependencyFinder, AssetDependencyFinderCache>();

@@ -9,7 +9,7 @@ namespace FubuMVC.Core.Assets.Http
 {
     public interface IContentWriter
     {
-        IEnumerable<AssetFile> Write(AssetPath asset);
+        bool Write(AssetPath asset, Action<IEnumerable<AssetFile>> writeHeaders);
     }
 
     public class ContentWriter : IContentWriter
@@ -28,23 +28,25 @@ namespace FubuMVC.Core.Assets.Http
             _writer = writer;
         }
 
-        public IEnumerable<AssetFile> Write(AssetPath asset)
+        public bool Write(AssetPath asset, Action<IEnumerable<AssetFile>> writeHeaders)
         {
             if (asset.IsBinary())
             {
-                return writeBinary(asset);
+                return writeBinary(asset, writeHeaders).Any();
             }
             
             // TODO -- have to deal with the [package]:scripts/
             // think it'll just be testing
-            return writeTextualAsset(asset);
+            return writeTextualAsset(asset, writeHeaders).Any();
         }
 
-        private IEnumerable<AssetFile> writeTextualAsset(AssetPath asset)
+        private IEnumerable<AssetFile> writeTextualAsset(AssetPath asset, Action<IEnumerable<AssetFile>> writeHeaders)
         {
             var source = _cache.SourceFor(asset);
             if (source.Files.Any())
             {
+                writeHeaders(source.Files);
+
                 var contents = source.GetContent(_contentPipeline);
                 _writer.Write(source.Files.First().MimeType, contents);
             }
@@ -53,18 +55,22 @@ namespace FubuMVC.Core.Assets.Http
             return source.Files;
         }
 
-        private IEnumerable<AssetFile> writeBinary(AssetPath asset)
+        private IEnumerable<AssetFile> writeBinary(AssetPath asset, Action<IEnumerable<AssetFile>> writeHeaders)
         {
             var file = _fileGraph.Find(asset);
+            
 
             if (file == null)
             {
                 return Enumerable.Empty<AssetFile>();
             }
 
-            _writer.WriteFile(file.MimeType, file.FullPath, null);
+            var files = new AssetFile[] { file };
+            writeHeaders(files);
 
-            return new AssetFile[]{file};
+            _writer.WriteFile(file.MimeType, file.FullPath, null);
+            
+            return files;
         }
     }
 }

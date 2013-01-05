@@ -17,10 +17,13 @@ namespace FubuMVC.Tests.Assets.Http
     {
         private AssetPath theAssetPath;
         private AssetFile theFile;
-        private IEnumerable<AssetFile> theReturnedFiles;
+        private bool wasWritten;
+        private Action<IEnumerable<AssetFile>> theAction;
+        private IEnumerable<AssetFile> _files;
 
         protected override void beforeEach()
         {
+            _files = null;
             theAssetPath = new AssetPath("images/icon.gif");
 
             // Precondition here
@@ -33,13 +36,21 @@ namespace FubuMVC.Tests.Assets.Http
             MockFor<IAssetFileGraph>().Stub(x => x.Find(theAssetPath))
                 .Return(theFile);
 
-            theReturnedFiles = ClassUnderTest.Write(theAssetPath);
+            theAction = files => _files = files;
+
+            wasWritten = ClassUnderTest.Write(theAssetPath, theAction);
         }
 
         [Test]
         public void should_have_returned_the_single_file()
         {
-            theReturnedFiles.Single().ShouldEqual(theFile);
+            wasWritten.ShouldBeTrue();
+        }
+
+        [Test]
+        public void should_call_through_with_the_one_file()
+        {
+            _files.Single().ShouldEqual(theFile);
         }
 
         [Test]
@@ -53,8 +64,10 @@ namespace FubuMVC.Tests.Assets.Http
     public class when_writing_textual_output : InteractionContext<ContentWriter>
     {
         private AssetFile[] theFiles;
-        private IEnumerable<AssetFile> theReturnedFiles;
+        private bool wasReturned;
         private const string theContent = "blah blah blah";
+        private Action<IEnumerable<AssetFile>> theAction;
+        private IEnumerable<AssetFile> _files;
 
         protected override void beforeEach()
         {
@@ -76,8 +89,9 @@ namespace FubuMVC.Tests.Assets.Http
 
             MockFor<IContentSource>().Stub(x => x.Files).Return(theFiles);
 
+            theAction = files => _files = files;
 
-            theReturnedFiles = ClassUnderTest.Write(assetPath);
+            wasReturned = ClassUnderTest.Write(assetPath, theAction);
         }
 
         [Test]
@@ -89,7 +103,9 @@ namespace FubuMVC.Tests.Assets.Http
         [Test]
         public void returns_all_the_files_from_the_content_plan_source()
         {
-            theReturnedFiles.ShouldHaveTheSameElementsAs(theFiles);
+            _files.ShouldHaveTheSameElementsAs(theFiles);
+
+            wasReturned.ShouldBeTrue();
         }
 
         [Test]

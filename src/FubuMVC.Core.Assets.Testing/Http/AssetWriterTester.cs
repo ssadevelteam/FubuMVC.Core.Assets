@@ -13,30 +13,26 @@ using FubuMVC.Core.Runtime;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Is = Rhino.Mocks.Constraints.Is;
 
 namespace FubuMVC.Tests.Assets.Http
 {
     [TestFixture]
     public class when_writing_an_asset_that_cannot_be_found : InteractionContext<AssetWriter>
     {
-        private string theEtag;
-        private IEnumerable<AssetFile> theFiles;
         private AssetPath theAssetPath;
-        private Header[] theHeaders;
 
         protected override void beforeEach()
         {
-            theEtag = "12345";
-
-            theFiles = Enumerable.Empty<AssetFile>();
 
             theAssetPath = new AssetPath("scripts/something")
             {
                 ResourceHash = Guid.NewGuid().ToString()
             };
 
-            MockFor<IContentWriter>().Expect(x => x.Write(theAssetPath))
-                .Return(theFiles);
+            MockFor<IContentWriter>().Expect(x => x.Write(theAssetPath, null))
+                .Constraints(Is.Equal(theAssetPath), Is.NotNull())
+                .Return(false);
 
 
             FubuMode.Reset();
@@ -58,7 +54,25 @@ namespace FubuMVC.Tests.Assets.Http
         }
     }
 
+    public class StubContentWriter : IContentWriter
+    {
+        private readonly AssetPath _path;
+        private readonly IEnumerable<AssetFile> _files;
 
+        public StubContentWriter(AssetPath path, IEnumerable<AssetFile> files)
+        {
+            _path = path;
+            _files = files;
+        }
+
+        public bool Write(AssetPath asset, Action<IEnumerable<AssetFile>> writeHeaders)
+        {
+            asset.ShouldEqual(_path);
+            writeHeaders(_files);
+
+            return true;
+        }
+    }
 
     [TestFixture]
     public class when_writing_the_asset_in_production_mode : InteractionContext<AssetWriter>
@@ -78,6 +92,9 @@ namespace FubuMVC.Tests.Assets.Http
                 ResourceHash = Guid.NewGuid().ToString()
             };
 
+            var writer = new StubContentWriter(theAssetPath, theFiles);
+            Services.Inject<IContentWriter>(writer);
+
             theHeaders = new Header[]{
                 new Header("a", "1"), 
                 new Header("b", "2"), 
@@ -85,9 +102,6 @@ namespace FubuMVC.Tests.Assets.Http
             };
 
             MockFor<IAssetCacheHeaders>().Stub(x => x.HeadersFor(theFiles)).Return(theHeaders);
-
-            MockFor<IContentWriter>().Expect(x => x.Write(theAssetPath))
-                .Return(theFiles);
 
             MockFor<IETagGenerator<IEnumerable<AssetFile>>>()
                 .Stub(x => x.Create(theFiles))
@@ -122,11 +136,6 @@ namespace FubuMVC.Tests.Assets.Http
                 x => x.LinkFilesToResource(theAssetPath.ResourceHash, theFiles));
         }
 
-        [Test]
-        public void should_write_all_the_content()
-        {
-            VerifyCallsFor<IContentWriter>();
-        }
     }
 
 
@@ -157,8 +166,9 @@ namespace FubuMVC.Tests.Assets.Http
 
             MockFor<IAssetCacheHeaders>().Stub(x => x.HeadersFor(theFiles)).Return(theHeaders);
 
-            MockFor<IContentWriter>().Expect(x => x.Write(theAssetPath))
-                .Return(theFiles);
+            var writer = new StubContentWriter(theAssetPath, theFiles);
+            Services.Inject<IContentWriter>(writer);
+
 
             MockFor<IETagGenerator<IEnumerable<AssetFile>>>()
                 .Stub(x => x.Create(theFiles))
@@ -193,10 +203,5 @@ namespace FubuMVC.Tests.Assets.Http
                 x => x.LinkFilesToResource(theAssetPath.ResourceHash, theFiles));
         }
 
-        [Test]
-        public void should_write_all_the_content()
-        {
-            VerifyCallsFor<IContentWriter>();
-        }
     }
 }

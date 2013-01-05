@@ -12,7 +12,7 @@ namespace FubuMVC.Core.Assets.Combination
         // TODO -- this is going to have to be hit with integrated tests
 
         public CombineAllUniqueSetsCombinationDeterminationService(IAssetCombinationCache combinations)
-            : base(combinations, new List<ICombinationPolicy> { new CombineAllScriptFiles(), new CombineAllStylesheets() })
+            : base(combinations, new CombinationPolicyCache(new List<ICombinationPolicy> { new CombineAllScriptFiles(), new CombineAllStylesheets()}))
         {
         }
 

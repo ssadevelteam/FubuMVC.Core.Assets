@@ -15,6 +15,7 @@ using StructureMap;
 using System.Linq;
 using Rhino.Mocks;
 using FubuCore;
+using Is = Rhino.Mocks.Constraints.Is;
 
 namespace FubuMVC.Tests.Assets
 {
@@ -112,27 +113,12 @@ namespace FubuMVC.Tests.Assets
         [Test]
         public void should_register_both_of_the_combination_policies()
         {
-            theContainer.GetAllInstances<ICombinationPolicy>().Select(x => x.GetType())
-                .ShouldHaveTheSameElementsAs(typeof(CombineAllScriptFiles), typeof(CombineAllStylesheets));
+            MockFor<ICombinationPolicyCache>().AssertWasCalled(x => x.Add(null), x => x.Constraints(Is.TypeOf<CombineAllScriptFiles>()));
+            MockFor<ICombinationPolicyCache>().AssertWasCalled(x => x.Add(null), x => x.Constraints(Is.TypeOf<CombineAllStylesheets>()));
+                
         }
     }
 
-    [TestFixture]
-    public class when_there_are_asset_policy_types_in_the_asset_graph : AssetCombinationBuildingActivatorContext
-    {
-        protected override void theContextIs()
-        {
-            theGraph.ApplyPolicy(typeof(FakeAssetPolicy1).AssemblyQualifiedName);
-            theGraph.ApplyPolicy(typeof(FakeAssetPolicy2).AssemblyQualifiedName);
-        }
-
-        [Test]
-        public void should_register_both_of_the_asset_policy_classes()
-        {
-            theContainer.GetAllInstances<IAssetPolicy>().Select(x => x.GetType())
-                .ShouldHaveTheSameElementsAs(typeof(FakeAssetPolicy1), typeof(FakeAssetPolicy2));
-        }
-    }
 
     [TestFixture]
     public class when_there_are_mixed_combination_and_asset_policty_types_registered_in_the_asset_graph : AssetCombinationBuildingActivatorContext
@@ -147,25 +133,13 @@ namespace FubuMVC.Tests.Assets
         }
 
         [Test]
-        public void should_register_both_of_the_asset_policy_classes()
-        {
-            theContainer.GetAllInstances<IAssetPolicy>().Select(x => x.GetType())
-                .ShouldHaveTheSameElementsAs(typeof(FakeAssetPolicy1), typeof(FakeAssetPolicy2));
-        }
-
-        [Test]
         public void should_register_both_of_the_combination_policies()
         {
-            theContainer.GetAllInstances<ICombinationPolicy>().Select(x => x.GetType())
-                .ShouldHaveTheSameElementsAs(typeof(CombineAllScriptFiles), typeof(CombineAllStylesheets));
+            MockFor<ICombinationPolicyCache>().AssertWasCalled(x => x.Add(null), x => x.Constraints(Is.TypeOf<CombineAllScriptFiles>()));
+            MockFor<ICombinationPolicyCache>().AssertWasCalled(x => x.Add(null), x => x.Constraints(Is.TypeOf<CombineAllStylesheets>()));
+
         }
 
-        [Test]
-        public void should_trace_the_discovery_of_an_asset_policy()
-        {
-            var traceMessage = "Registering {0} as an IAssetPolicy";
-            MockFor<IPackageLog>().AssertWasCalled(x => x.Trace(traceMessage, typeof(FakeAssetPolicy1).FullName));
-        }
 
         [Test]
         public void should_trace_the_discovery_of_a_combination_policy()
@@ -198,8 +172,9 @@ namespace FubuMVC.Tests.Assets
 
         protected override void beforeEach()
         {
-            theContainer = new Container();
-            Services.Inject<IContainerFacility>(new StructureMapContainerFacility(theContainer));
+            theContainer = new Container(x => {
+                x.ForSingletonOf<ICombinationPolicyCache>().Use<CombinationPolicyCache>();
+            });
 
             theGraph = new AssetGraph();
             Services.Inject(theGraph);

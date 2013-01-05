@@ -14,33 +14,29 @@ namespace FubuMVC.Core.Assets
 {
     public class AssetCombinationBuildingActivator : IActivator
     {
-        private readonly IContainerFacility _container;
         private readonly AssetGraph _graph;
         private readonly IAssetCombinationCache _cache;
         private readonly IAssetFileGraph _fileGraph;
+        private readonly ICombinationPolicyCache _combinations;
 
-        public AssetCombinationBuildingActivator(IContainerFacility container, AssetGraph graph, IAssetCombinationCache cache, IAssetFileGraph fileGraph)
+        public AssetCombinationBuildingActivator(AssetGraph graph, IAssetCombinationCache cache, IAssetFileGraph fileGraph, ICombinationPolicyCache combinations)
         {
-            _container = container;
             _graph = graph;
             _cache = cache;
             _fileGraph = fileGraph;
+            _combinations = combinations;
         }
 
         public void Activate(IEnumerable<IPackageInfo> packages, IPackageLog log)
         {
             _graph.PolicyTypes.Each(type =>
             {
-                if (type.CanBeCastTo<IAssetPolicy>())
-                {
-                    log.Trace("Registering {0} as an IAssetPolicy", type.FullName);
-                    _container.Inject(typeof(IAssetPolicy), type);
-                }
-
-                if (type.CanBeCastTo<ICombinationPolicy>())
+                if (type.CanBeCastTo<ICombinationPolicy>() && type.IsConcreteWithDefaultCtor())
                 {
                     log.Trace("Registering {0} as an ICombinationPolicy", type.FullName);
-                    _container.Inject(typeof(ICombinationPolicy), type);
+                    var policy = Activator.CreateInstance(type).As<ICombinationPolicy>();
+
+                    _combinations.Add(policy);
                 }
             });
 

@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Bottles;
 using Bottles.Diagnostics;
+using FubuCore;
+using FubuMVC.Core.Assets.Combination;
 using FubuMVC.Core.Assets.Files;
 
 namespace FubuMVC.Core.Assets
@@ -29,6 +32,16 @@ namespace FubuMVC.Core.Assets
             {
                 log.Trace("Running " + p);
                 p.Apply(log, _fileGraph, _graph);
+            });
+
+            _graph.PolicyTypes.Each(type =>
+            {
+                if (type.CanBeCastTo<IAssetPolicy>() && type.IsConcreteWithDefaultCtor())
+                {
+                    var policy = Activator.CreateInstance(type).As<IAssetPolicy>();
+                    log.Trace("Running " + policy);
+                    policy.Apply(log, _fileGraph, _graph);
+                }
             });
         }
     }

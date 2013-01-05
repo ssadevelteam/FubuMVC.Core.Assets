@@ -68,7 +68,7 @@ namespace FubuMVC.Tests.Assets.Combination
 
     public class RecordingCombinationDeterminationService : CombinationDeterminationService
     {
-        public RecordingCombinationDeterminationService(AssetGraph graph, IAssetCombinationCache cache, IEnumerable<ICombinationPolicy> policies) : base(cache, policies)
+        public RecordingCombinationDeterminationService(AssetGraph graph, IAssetCombinationCache cache, IEnumerable<ICombinationPolicy> policies) : base(cache, new CombinationPolicyCache(policies))
         {
         }
 

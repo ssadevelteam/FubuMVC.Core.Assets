@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FubuMVC.Core;
 using FubuMVC.Core.Assets;
@@ -65,6 +66,21 @@ namespace FubuMVC.Tests.Assets.Tags
         public string HttpMethod()
         {
             return TheHttpMethod;
+        }
+
+        public bool HasHeader(string key)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<string> GetHeader(string key)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<string> AllHeaderKeys()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

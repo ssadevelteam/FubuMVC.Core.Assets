@@ -32,15 +32,12 @@ namespace FubuMVC.Core.Assets.Http
         [UrlPattern("get__content")]
         public void Write(AssetPath path)
         {
-            IEnumerable<AssetFile> files = _writer.Write(path);
-            if (files.Any())
+            //_output.AppendHeader(HttpResponseHeader.ETag, "random");
+
+            if (!_writer.Write(path, files => processAssetFiles(path, files)))
             {
-                processAssetFiles(path, files);
-            }
-            else
-            {
-                _output.WriteResponseCode(HttpStatusCode.NotFound);
                 _output.Write("Cannot find asset " + path.ToFullName());
+                _output.WriteResponseCode(HttpStatusCode.NotFound);
             }
         }
 

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using FubuMVC.Core.Runtime;
 
 namespace FubuMVC.Core.Assets.Combination
 {
@@ -9,9 +7,9 @@ namespace FubuMVC.Core.Assets.Combination
     public class CombinationDeterminationService : ICombinationDeterminationService
     {
         private readonly IAssetCombinationCache _cache;
-        private readonly IEnumerable<ICombinationPolicy> _policies;
+        private readonly ICombinationPolicyCache _policies;
 
-        public CombinationDeterminationService(IAssetCombinationCache cache, IEnumerable<ICombinationPolicy> policies)
+        public CombinationDeterminationService(IAssetCombinationCache cache, ICombinationPolicyCache policies)
         {
             _cache = cache;
             _policies = policies;
@@ -24,10 +22,7 @@ namespace FubuMVC.Core.Assets.Combination
 
         protected IEnumerable<ICombinationPolicy> policies
         {
-            get
-            {
-                return _policies;
-            }
+            get { return _policies; }
         }
 
         public virtual void TryToReplaceWithCombinations(AssetTagPlan plan)
@@ -35,24 +30,19 @@ namespace FubuMVC.Core.Assets.Combination
             applyPoliciesToDiscoverPotentialCombinations(plan);
 
             TryAllExistingCombinations(plan);
-
-            
         }
 
         private void applyPoliciesToDiscoverPotentialCombinations(AssetTagPlan plan)
         {
-            var mimeTypePolicies = _policies.Where(x => x.MimeType == plan.MimeType);
-            var combinationPolicies = _cache.OrderedCombinationCandidatesFor(plan.MimeType).Union(mimeTypePolicies);
+            IEnumerable<ICombinationPolicy> mimeTypePolicies = _policies.Where(x => x.MimeType == plan.MimeType);
+            IEnumerable<ICombinationPolicy> combinationPolicies =
+                _cache.OrderedCombinationCandidatesFor(plan.MimeType).Union(mimeTypePolicies);
             combinationPolicies.Each(policy => ExecutePolicy(plan, policy));
         }
 
         public virtual void ExecutePolicy(AssetTagPlan plan, ICombinationPolicy policy)
         {
-            policy.DetermineCombinations(plan).Each(combo =>
-            {
-                _cache.StoreCombination(plan.MimeType, combo);
-                //plan.TryCombination(combo);
-            });
+            policy.DetermineCombinations(plan).Each(combo => _cache.StoreCombination(plan.MimeType, combo));
         }
 
         public void TryAllExistingCombinations(AssetTagPlan plan)
