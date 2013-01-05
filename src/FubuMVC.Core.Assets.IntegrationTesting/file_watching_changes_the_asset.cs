@@ -9,7 +9,7 @@ using FubuTestingSupport;
 
 namespace FubuMVC.Core.Assets.IntegrationTesting
 {
-    [TestFixture]
+    [TestFixture, Explicit]
     public class file_watching_changes_the_asset : FubuRegistryHarness
     {
         private string _file;
