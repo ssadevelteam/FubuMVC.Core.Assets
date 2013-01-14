@@ -22,5 +22,6 @@
   </metadata>
   <files>
     <file src="..\..\src\FubuMVC.Core.Assets\bin\release\FubuMVC.Core.Assets.*" target="lib\net40" />
+    <file src="web.config.transform" target="content" />
   </files>
 </package>
