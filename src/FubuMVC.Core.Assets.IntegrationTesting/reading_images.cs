@@ -1,22 +1,44 @@
 using System.Net;
 using FubuMVC.Core.Assets.Files;
+using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Runtime;
+using FubuMVC.OwinHost;
 using FubuMVC.TestingHarness;
 using NUnit.Framework;
 using FubuTestingSupport;
+using FubuMVC.StructureMap;
+using StructureMap;
+using FubuMVC.Katana;
 
 namespace FubuMVC.Core.Assets.IntegrationTesting
 {
-    [TestFixture, Ignore("Too unreliable for CI")]
-    public class reading_images : FubuRegistryHarness
+    [TestFixture]
+    public class reading_images
     {
-        protected override void initializeBottles()
-        {
-            runBottles(@"
-init src/TestPackage1 pak1
-link src/FubuMVC.Core.Assets.IntegrationTesting pak1
+        private static readonly CommandRunner _runner = new CommandRunner();
+        private EmbeddedFubuMvcServer _server;
 
-");
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            _runner.RunBottles("init src/TestPackage1 pak1");
+            _runner.RunBottles("link src/FubuMVC.Core.Assets.IntegrationTesting pak1");
+
+            _server =
+                FubuApplication.DefaultPolicies()
+                               .StructureMap(new Container())
+                               .RunEmbedded(port: PortFinder.FindPort(5505));
+
+        }
+
+        public void TearDown()
+        {
+            _server.Dispose();
+        }
+
+        public EndpointDriver endpoints
+        {
+            get { return _server.Endpoints; }
         }
 
         [Test]
