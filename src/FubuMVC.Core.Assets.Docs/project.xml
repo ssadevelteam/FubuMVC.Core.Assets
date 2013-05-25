@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ProjectRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TagLine>The FubuMVC Asset Pipeline</TagLine>
+  <Name>FubuMVC.Core.Assets</Name>
+  <GitHubPage>http://github.com/DarthFubuMVC/FubuMVC.Core.Assets</GitHubPage>
+  <UserGroupUrl>https://groups.google.com/forum/?fromgroups#!forum/fubumvc-devel</UserGroupUrl>
+  <BuildServerUrl>http://build.fubu-project.org/project.html?projectId=project42&amp;tab=projectOverview</BuildServerUrl>
+  <BottleName>FubuMVC.Core.Assets.Docs</BottleName>
+  <TeamCityBuildType>bt74</TeamCityBuildType>
+  <Nugets>
+    <PublishedNuget>
+      <Name>FubuMVC.Core.Assets</Name>
+      <Description>The FubuMVC Asset Pipeline</Description>
+    </PublishedNuget>
+  </Nugets>
+  <Url>fubumvc.core.assets</Url>
+</ProjectRoot>
