@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using FubuMVC.Core.UI;
 using HtmlTags;
 using NUnit.Framework;
@@ -33,24 +32,6 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
                 .StatusCodeShouldBe(HttpStatusCode.OK)
                 .ScriptNames().ShouldHaveTheSameElementsAs("_content/scripts/jquery-1.8.2.min.js", "_content/scripts/jquery.form.js");
         }
-
-        [Test]
-        public void fetch_jquery_continuations()
-        {
-            var scripts = SelfHostHarness.Endpoints.Get<AssetEndpoint>(x => x.get_continuations())
-                    .StatusCodeShouldBe(HttpStatusCode.OK)
-                    .ScriptNames(); 
-            
-            scripts.ShouldHaveTheSameElementsAs("_content/scripts/jquery-1.8.2.min.js", "_content/scripts/jquery.continuations.js");
-        }
-
-        [Test]
-        public void fetch_jquery_continuations_forms()
-        {
-            SelfHostHarness.Endpoints.Get<AssetEndpoint>(x => x.get_jquery_continuations_forms())
-                .StatusCodeShouldBe(HttpStatusCode.OK)
-                .ScriptNames().ShouldHaveTheSameElementsAs("_content/scripts/jquery-1.8.2.min.js", "_content/scripts/jquery.continuations.js", "_content/scripts/jquery.form.js", "_content/scripts/jquery.continuations.forms.js");
-        }
     }
 
     public class AssetEndpoint
@@ -81,22 +62,6 @@ namespace FubuMVC.Core.Assets.IntegrationTesting
         public HtmlDocument get_jquery_form()
         {
             _document.Asset("jquery.form.js");
-            _document.WriteAssetsToHead();
-
-            return _document;
-        }
-
-        public HtmlDocument get_continuations()
-        {
-            _document.Asset("continuations");
-            _document.WriteAssetsToHead();
-
-            return _document;
-        }
-
-        public HtmlDocument get_jquery_continuations_forms()
-        {
-            _document.Asset("jquery.continuations.forms.js");
             _document.WriteAssetsToHead();
 
             return _document;
