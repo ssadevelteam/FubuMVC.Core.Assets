@@ -62,6 +62,13 @@ namespace FubuMVC.Tests.Assets.Http
         }
 
         [Test]
+        public void the_chain_is_tagged_as_not_traced()
+        {
+            theChain.IsTagged(BehaviorChain.NoTracing)
+                .ShouldBeTrue();
+        }
+
+        [Test]
         public void the_chain_should_have_an_etag_invocation_filter()
         {
             theChain.Filters.Single().ShouldBeOfType<EtagInvocationFilter>();

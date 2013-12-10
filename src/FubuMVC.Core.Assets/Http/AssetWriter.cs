@@ -3,13 +3,14 @@ using System.Linq;
 using System.Net;
 using FubuMVC.Core.Assets.Caching;
 using FubuMVC.Core.Assets.Files;
+using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.Resources.Etags;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Security;
 
 namespace FubuMVC.Core.Assets.Http
 {
-    [NotAuthenticated]
+    [NotAuthenticated, Tag(BehaviorChain.NoTracing)]
     public class AssetWriter
     {
         private readonly IAssetContentCache _cache;

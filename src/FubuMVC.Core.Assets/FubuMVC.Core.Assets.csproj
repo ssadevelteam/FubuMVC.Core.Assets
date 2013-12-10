@@ -186,16 +186,14 @@
     <None Include="global.asset.config">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="pak-WebContent.zip" />
     <None Include="ripple.dependencies.config">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="pak-Config.zip" />
-    <EmbeddedResource Include="pak-Data.zip" />
-    <EmbeddedResource Include="pak-WebContent.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\scripts\jquery-1.8.2.min.js" />
     <Content Include="Content\scripts\jquery.form.js" />
+    <Content Include="Content\scripts\jquery-1.8.2.min.js" />
     <Content Include="Content\scripts\underscore-min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
