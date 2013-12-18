@@ -1,3 +1,8 @@
-<!--Title: FubuMVC.Core.Assets-->
+<!--Title: The Asset Pipeline-->
+
 <ProjectSummary />
+
+<Info>The asset pipeline is likely going to change quite a bit for FubuMVC 2.0.  The current plan is to utilize the Node.js based <a href="http://mimosa.io">Mimosa.js</a> tool for all asset transformations.  See the <a href="https://groups.google.com/forum/#!searchin/fubumvc-devel/mimosa.js/fubumvc-devel/htCo2HejsGA/E-_o89K1eI8J">discussion on the user list</a> for more information.</Info>
+
+
 <TableOfContents />

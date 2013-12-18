@@ -1,0 +1,33 @@
+<!--Title: Configuration-->
+<!--Url: configuration-->
+
+<markdown>
+
+<Section title="Textual DSL" id="dsl">
+
+</Section>
+
+<Section title="Configuring inside of a FubuRegistry" id="fuburegistry">
+
+</Section>
+
+<Section title="Dependencies between Assets" id="dependencies">
+TODO(Write some content!)
+</Section>
+
+<Section title="Aliases" id="aliases">
+TODO(Write some content!)
+</Section>
+
+<Section title="Extensions" id="extensions">
+TODO(Write some content!)
+</Section>
+
+<Section title="Policies" id="policies">
+TODO(Write some content!)
+</Section>
+
+
+
+</markdown>
+
