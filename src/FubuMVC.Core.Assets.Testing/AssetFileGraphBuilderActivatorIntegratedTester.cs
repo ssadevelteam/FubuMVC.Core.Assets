@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +8,7 @@ using FubuCore;
 using FubuMVC.Core.Assets;
 using FubuMVC.Core.Assets.Diagnostics;
 using FubuMVC.Core.Assets.Files;
+using FubuMVC.Core.Packaging;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;
@@ -54,6 +56,8 @@ namespace FubuMVC.Tests.Assets
         [SetUp]
         public void SetUp()
         {
+            FubuMvcPackageFacility.PhysicalRootPath = Environment.CurrentDirectory;
+
             packageDirectory = ".".ToFullPath();
             _packages = new List<IPackageInfo>();
 
@@ -89,6 +93,12 @@ namespace FubuMVC.Tests.Assets
             activator.Activate(_packages, theLog);
 
             Debug.WriteLine(theLog.FullTraceText());
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            FubuMvcPackageFacility.PhysicalRootPath = null;
         }
 
         [Test]

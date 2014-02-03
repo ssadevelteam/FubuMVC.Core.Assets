@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using FubuMVC.Core;
 using FubuMVC.Core.Assets;
@@ -82,5 +83,7 @@ namespace FubuMVC.Tests.Assets.Tags
         {
             throw new System.NotImplementedException();
         }
+
+        public NameValueCollection QueryString { get; private set; }
     }
 }
